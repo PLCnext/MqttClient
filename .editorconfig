@@ -1,0 +1,17 @@
+root = true
+
+[*]
+end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{config,libmeta,compmeta,progmeta,settings,xml}]
+indent_size = 2
+
+[*.{md,mkdown,markdown}]
+trim_trailing_whitespace = false
+
+[.{json,jsonc}]
+indent_size = 2
