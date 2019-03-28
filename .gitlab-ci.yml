@@ -1,0 +1,98 @@
+#//
+#// Copyright (c) Phoenix Contact GmbH & Co. KG. All rights reserved.
+#// Licensed under the MIT. See LICENSE file in the project root for full license information.
+#// SPDX-License-Identifier: MIT
+#//
+stages:
+ - PLCnextBuildC
+ - PLCnextBuildCpp
+ - PLCnextBuildLibrary
+ - deploy
+
+## Docker Image:
+# PLCNCLI
+# C/C++ SDK
+# PLCNEngineer Library Builder
+# CMAKE
+
+image: $SDK_IMAGE
+
+variables:
+  SDK_PATH: "${SDKPATH}"
+  TARGET_VERSION: "${TARGETVERSION}"
+  TARGET_NAME: "${TARGETNAME}"
+
+.RunnerRequirements:
+ before_script:
+  - chmod +x tools/*
+  - which cmake
+  - cmake --version
+  - which make
+  - make --version
+  - which plcncli
+  - plcncli --version
+  - plcncli get sdks
+  - plcncli get targets
+  - apt-get update
+  - apt-get install ninja-build
+  - echo "SDK_PATH:${SDK_PATH}"
+  - echo "TARGET_VERSION:${TARGET_VERSION}"
+  - echo "TARGET_NAME:${TARGET_NAME}"
+ tags:
+  - docker
+  - debian-based
+ allow_failure: true
+
+#################################################
+#################################################
+#################################################
+######PLCnext Building###########################
+BuildPahoC:
+ stage: PLCnextBuildC
+ extends: .RunnerRequirements
+ script:
+  - tools/build-paho.mqtt.c.sh -t "${SDK_PATH}" -a "${TARGET_VERSION}" -n "${TARGET_NAME}"
+ cache:
+  key: buildpahoc
+  paths:
+   - external/paho.mqtt.c
+ artifacts:
+   expire_in: 10 min
+   paths:
+   - deploy
+
+BuildPahoCpp:
+ stage: PLCnextBuildCpp
+ extends: .RunnerRequirements
+ dependencies:
+  - BuildPahoC
+ script:
+ - tools/build-paho.mqtt.cpp.sh -t "${SDK_PATH}" -a "${TARGET_VERSION}" -n "${TARGET_NAME}"
+ cache:
+  key: buildpahoc
+  paths:
+   - external/paho.mqtt.cpp
+ artifacts:
+   expire_in: 10 min
+   paths:
+   - deploy
+
+BuildComponent:
+ stage: PLCnextBuildLibrary
+ extends: .RunnerRequirements
+ dependencies:
+  - BuildPahoCpp
+  - BuildPahoC
+
+ script:
+  - tools/build-component.sh -t "${SDK_PATH}" -a "${TARGET_VERSION}" -n "${TARGET_NAME}"
+ cache:
+  key: buildcomponent
+  paths:
+   - build/
+ artifacts:
+  name: "$CI_COMMIT_REF_SLUG"
+  when: always
+  paths:
+   - deploy
+
