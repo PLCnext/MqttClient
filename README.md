@@ -25,7 +25,7 @@ Building from source requires the PLCnext SDK for your target. It is strongly re
 
 An example of a build session is as follows:
 
-```
+```cmake
 $ git clone https://github.com/PLCnext/MqttClient
 $ cd MqttClient
 $ cmake -G "Ninja" 
