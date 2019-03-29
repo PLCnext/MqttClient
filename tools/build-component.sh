@@ -45,6 +45,3 @@ cmake --build "${DIR}/../build/external/${TARGETNAME}_${VERSION}" \
 echo CMAKE build install
 cmake --build "${DIR}/../build/external/${TARGETNAME}_${VERSION}" \
 --config Debug --target install -- -j 3
-
-rm -r "${DIR}/../build"
-

@@ -1,13 +1,18 @@
 # ReleaseNotes
 
-## Release version 0.0.1
+## Current version
 
-| Datum      | Version     | Author       |
-|------------|-------------|--------------|
-| 29.03.2019 | 0.0.1       | Martin Boers |
+| Date       | Version     |
+|------------|-------------|
+| 29.03.2019 | 1.0.0       |
 
-### Features
+### New Features
 
 ### Changes
 
 ### BugFixes
+
+----------
+
+## Previous versions
+
