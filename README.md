@@ -8,7 +8,7 @@
 
 | Date       | Version | Author       |
 |------------|---------|--------------|
-| 29.03.2019 | 0.0.1   | Martin Boers |
+| 29.03.2019 | 1.0.0   | Martin Boers |
 
 
 ## Description
@@ -21,7 +21,7 @@ Contributions to this project are welcome.
 
 ## Building from source
 
-Building from source requires the PLCnext SDK for your target. It is strongly recommended that you use the PLCnext Command Line Interface (CLI) to install and manage PLCnext SDKs on your host. Assistance with this is available from the PLCnext Community.
+Building from source requires the PLCnext SDK for your target. It is strongly recommended that you use the PLCnext Command Line Interface (CLI) to install and manage PLCnext SDKs on your host. Assistance with this is available from the [PLCnext Community](https://www.plcnext-community.net).
 
 An example of a build session is as follows:
 
@@ -62,7 +62,7 @@ Basic steps for using the MQTT Client RSC service in a PLCnext C++ component:
 - In the component's `SubscribeServices` method, call `ServiceManager::GetService<IMqttClientService>("PxceTcs")`, and assign the result to the pointer variable.
 - Using the assigned pointer, call the `CreateClient` method to create an MQTT Client.
 
-The complete set of available MQTT Client methods are documented ... (here).
+The complete API for the MQTT Client service is available [here](https://github.com/plcnext/MqttClient/docs/index.html).
 
 The `CreateClient` method must always be called before any other MQTT operation. This method returns a unique ID that must be used in all other method calls. In this way, it is possible to create multiple MQTT Client instances.
 
