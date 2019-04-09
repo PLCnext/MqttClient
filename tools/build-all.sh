@@ -13,6 +13,8 @@ a) ARPVERSION=${OPTARG};;
 n) TARGETNAME=${OPTARG};;
 esac
 done
+
+
 # Get the directory of this script
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
