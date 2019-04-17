@@ -49,7 +49,7 @@ Copy the contents of `external/deploy/axcf2152` to `/usr/local` on the target.
 
 Copy `libPxceTcs.Mqtt.Client.so` to `/usr/local/lib` on the target.
 
-Copy `libs/MqttClient.acf.config` to `/opt/plcnext/projects/Default` on the target.
+Copy `libs/MqttClientService/intermediate/config/MqttClient.acf.config` to `/opt/plcnext/projects/Default` on the target.
 
 Reboot the target.
 

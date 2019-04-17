@@ -7,6 +7,7 @@ stages:
  - PLCnextBuildC
  - PLCnextBuildCpp
  - PLCnextBuildLibrary
+ - PLCnextBuildAll
  - deploy
 
 ## Docker Image:
@@ -93,6 +94,30 @@ BuildComponent:
  artifacts:
   name: "$CI_COMMIT_REF_SLUG"
   when: always
+  expire_in: 20 min
   paths:
    - deploy
+
+BuildAll:
+ stage: PLCnextBuildAll
+ extends: .RunnerRequirements
+ script:
+  - tools/build-automatic-all.sh
+ artifacts:
+  name: "$CI_COMMIT_REF_SLUG"
+  when: on_success
+  paths:
+   - deploy
+
+
+
+
+
+
+
+
+
+
+
+
 
