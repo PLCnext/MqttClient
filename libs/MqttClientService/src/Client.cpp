@@ -107,6 +107,18 @@ void Client::Disconnect(Client::client_id_t clientId, int timeoutMS)
 	}
 }
 
+int Client::GetTimeout(Client::client_id_t clientId)
+{
+	try
+    {
+        return this->clients.at(clientId)->get_timeout().count();
+    }
+	catch (...)
+    {
+        throw;
+	}
+}
+
 bool Client::IsConnected(Client::client_id_t clientId)
 {
     bool result = false;
@@ -139,6 +151,18 @@ void Client::Reconnect(Client::client_id_t clientId)
 	try
     {
         this->clients.at(clientId)->reconnect();
+    }
+	catch (...)
+    {
+        throw;
+	}
+}
+
+void Client::SetTimeout(Client::client_id_t clientId, int timeoutMS)
+{
+	try
+    {
+        this->clients.at(clientId)->set_timeout(timeoutMS);
     }
 	catch (...)
     {

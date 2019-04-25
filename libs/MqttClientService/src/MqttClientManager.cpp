@@ -118,6 +118,23 @@ int32 MqttClientManager::Disconnect(int32 clientId, int32 timeoutMS)
     return result;
 }
 
+int32 MqttClientManager::GetTimeout(int32 clientId)
+{
+    int32 result = 0;
+
+    try
+    {
+        result = this->client->GetTimeout((Client::client_id_t)clientId);
+    }
+    catch(...)
+    {
+        this->log.Error("Exception in operation: GetTimeout({0})", clientId);
+        HandleException();
+        result = -1;
+    }
+    return result;
+}
+
 boolean MqttClientManager::IsConnected(int32 clientId)
 {
     boolean result = false;
@@ -167,6 +184,23 @@ int32 MqttClientManager::Reconnect(int32 clientId)
     catch(...)
     {
         this->log.Error("Exception in operation: Reconnect({0})", clientId);
+        HandleException();
+        result = -1;
+    }
+    return result;
+}
+
+int32 MqttClientManager::SetTimeout(int32 clientId, int32 timeoutMS)
+{
+    int32 result = 0;
+
+    try
+    {
+        this->client->SetTimeout((Client::client_id_t)clientId, timeoutMS);
+    }
+    catch(...)
+    {
+        this->log.Error("Exception in operation: SetTimeout({0}, {1})", clientId, timeoutMS);
         HandleException();
         result = -1;
     }

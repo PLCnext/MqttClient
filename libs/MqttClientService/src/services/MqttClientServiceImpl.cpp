@@ -57,6 +57,14 @@ int32 MqttClientServiceImpl::Disconnect(int32 clientId, int32 timeoutMS)
     return result;
 }
 
+int32 MqttClientServiceImpl::GetTimeout(int32 clientId)
+{
+    int32 result = 0;
+    // Service method implementation
+    result = MqttClientManager::GetInstance().GetTimeout(clientId);
+    return result;
+}
+
 boolean MqttClientServiceImpl::IsConnected(int32 clientId)
 {
     boolean result = false;
@@ -78,6 +86,14 @@ int32 MqttClientServiceImpl::Reconnect(int32 clientId)
     int32 result = 0;
     // Service method implementation
     result = MqttClientManager::GetInstance().Reconnect(clientId);
+    return result;
+}
+
+int32 MqttClientServiceImpl::SetTimeout(int32 clientId, int32 timeoutMS)
+{
+    int32 result = 0;
+    // Service method implementation
+    result = MqttClientManager::GetInstance().SetTimeout(clientId, timeoutMS);
     return result;
 }
 

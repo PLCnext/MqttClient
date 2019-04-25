@@ -1,8 +1,8 @@
+///////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) Phoenix Contact GmbH & Co. KG. All rights reserved.
-// Licensed under the MIT. See LICENSE file in the project root for full license information.
-// SPDX-License-Identifier: MIT
+//  Copyright PHOENIX CONTACT Electronics GmbH
 //
+///////////////////////////////////////////////////////////////////////////////
 #include "Arp/System/Rsc/Services/RscException.hpp"
 #include "Arp/System/Rsc/Services/RscServerContext.hpp"
 #include "MqttClientServiceStub.hpp"
@@ -35,21 +35,27 @@ void MqttClientServiceStub::Invoke(int methodHandle, RscServerContext& context)
         this->Disconnect(context);
         break;
     case 5:
-        this->IsConnected(context);
+        this->GetTimeout(context);
         break;
     case 6:
-        this->Publish(context);
+        this->IsConnected(context);
         break;
     case 7:
-        this->Reconnect(context);
+        this->Publish(context);
         break;
     case 8:
-        this->Subscribe(context);
+        this->Reconnect(context);
         break;
     case 9:
-        this->TryConsumeMessage(context);
+        this->SetTimeout(context);
         break;
     case 10:
+        this->Subscribe(context);
+        break;
+    case 11:
+        this->TryConsumeMessage(context);
+        break;
+    case 12:
         this->Unsubscribe(context);
         break;
     default:
@@ -120,6 +126,20 @@ void MqttClientServiceStub::Disconnect(RscServerContext& context)
     writer.Write(result);
 }
 
+void MqttClientServiceStub::GetTimeout(RscServerContext& context)
+{
+    RscReader& reader = context.GetReader();
+    RscWriter& writer = context.GetWriter();
+
+    int32 clientId = 0;
+    reader.Read(clientId);
+
+    int32 result = this->pServiceImpl->GetTimeout(clientId);
+
+    writer.WriteConfirmation();
+    writer.Write(result);
+}
+
 void MqttClientServiceStub::IsConnected(RscServerContext& context)
 {
     RscReader& reader = context.GetReader();
@@ -167,6 +187,22 @@ void MqttClientServiceStub::Reconnect(RscServerContext& context)
     reader.Read(clientId);
 
     int32 result = this->pServiceImpl->Reconnect(clientId);
+
+    writer.WriteConfirmation();
+    writer.Write(result);
+}
+
+void MqttClientServiceStub::SetTimeout(RscServerContext& context)
+{
+    RscReader& reader = context.GetReader();
+    RscWriter& writer = context.GetWriter();
+
+    int32 clientId = 0;
+    reader.Read(clientId);
+    int32 timeoutMS = 0;
+    reader.Read(timeoutMS);
+
+    int32 result = this->pServiceImpl->SetTimeout(clientId, timeoutMS);
 
     writer.WriteConfirmation();
     writer.Write(result);

@@ -1,8 +1,8 @@
+///////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) Phoenix Contact GmbH & Co. KG. All rights reserved.
-// Licensed under the MIT. See LICENSE file in the project root for full license information.
-// SPDX-License-Identifier: MIT
+//  Copyright PHOENIX CONTACT Electronics GmbH
 //
+///////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include "Arp/System/Core/Arp.h"
 #include "Arp/System/Rsc/Services/IRscService.hpp"
@@ -71,6 +71,13 @@ public: // abstract operations
     virtual int32   Disconnect(int32 clientId, int32 timeoutMS) = 0;
 
     /// <summary>
+    /// Return the maximum time to wait for an action to complete.
+    /// </summary>
+    /// <param name="clientId">the client identifier.</param>
+    /// <returns>the timeout in milliseconds.</returns>
+    virtual int32   GetTimeout(int32 clientId) = 0;
+
+    /// <summary>
     /// Determines if this client is currently connected to the server.
     /// </summary>
     /// <param name="clientId">the client identifier.</param>
@@ -95,6 +102,14 @@ public: // abstract operations
     /// <param name="clientId">the client identifier.</param>
     /// <returns>0: success</returns>
     virtual int32   Reconnect(int32 clientId) = 0;
+
+    /// <summary>
+    /// Set the maximum time to wait for an action to complete.
+    /// </summary>
+    /// <param name="clientId">the client identifier.</param>
+    /// <param name="timeoutMS">the timeout in milliseconds.</param>
+    /// <returns>0: success</returns>
+    virtual int32   SetTimeout(int32 clientId, int32 timeoutMS) = 0;
 
     /// <summary>
     /// Subscribe to a topic, which may include wildcards, using a QoS of 1.
@@ -138,7 +153,7 @@ inline IMqttClientService::~IMqttClientService(void)
 
 inline IRscServiceProxyFactory& IMqttClientService::GetProxyFactory()
 {
-    return MqttClientServiceProxyFactory::GetInstance();
+    return MqttClientServiceProxyFactory::GetInstance(); 
 }
 
 }}} // end of namespace PxceTcs::MqttClient::Services
