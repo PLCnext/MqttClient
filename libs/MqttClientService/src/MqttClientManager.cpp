@@ -235,7 +235,7 @@ int32 MqttClientManager::TryConsumeMessage(int32 clientId, Message& msg)
     {
         this->log.Info("** About to call client->TryConsumeMessage");
         got_message = this->client->TryConsumeMessage((Client::client_id_t)clientId, &mqtt_msg);
-        if (got_message)
+        if (got_message && mqtt_msg!=nullptr)
         {
             this->log.Info("** Got message.");
             this->log.Info("** Is mqtt_msg null? {0}", (mqtt_msg==nullptr) );
