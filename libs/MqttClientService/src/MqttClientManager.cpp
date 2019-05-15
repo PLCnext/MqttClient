@@ -233,14 +233,18 @@ int32 MqttClientManager::TryConsumeMessage(int32 clientId, Message& msg)
 
     try
     {
+        this->log.Info("** About to call client->TryConsumeMessage");
         got_message = this->client->TryConsumeMessage((Client::client_id_t)clientId, &mqtt_msg);
         if (got_message)
         {
+            this->log.Info("** Got message. Getting topic");
             // Copy the mqtt topic
             msg.topic = RscString<512>(mqtt_msg->get_topic());
 
+            this->log.Info("** About to copy payload");
             // Copy the mqtt payload
             const mqtt::binary mqtt_payload = mqtt_msg->get_payload();
+            this->log.Info("** Payload size = {0}", mqtt_payload.size());
             msg.payload = RscVariant<512>();
             msg.payload.SetType(RscType::Stream);
             memcpy(msg.payload.GetDataAddress(), mqtt_msg->get_payload_ref().data(), mqtt_payload.size());
@@ -255,6 +259,7 @@ int32 MqttClientManager::TryConsumeMessage(int32 clientId, Message& msg)
         }
         else
         {
+            this->log.Info("** No message");
             result = 0;  // No message
         }
 
