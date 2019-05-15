@@ -228,7 +228,7 @@ int32 MqttClientManager::TryConsumeMessage(int32 clientId, Message& msg)
 {
     int32 result = -1;
 
-    mqtt::const_message_ptr mqtt_msg;
+    mqtt::const_message_ptr mqtt_msg = nullptr;
     bool got_message;
 
     try
@@ -237,7 +237,12 @@ int32 MqttClientManager::TryConsumeMessage(int32 clientId, Message& msg)
         got_message = this->client->TryConsumeMessage((Client::client_id_t)clientId, &mqtt_msg);
         if (got_message)
         {
-            this->log.Info("** Got message. Getting topic");
+            this->log.Info("** Got message.");
+            this->log.Info("** Is mqtt_msg null? {0}", (mqtt_msg==nullptr) );
+            this->log.Info("** Getting topic");
+            this->log.Info("** mqtt_msg->get_topic() = {0}", mqtt_msg->get_topic());
+            this->log.Info("** About to cast topic to RscString");
+            // TODO: CHECK FOR NULL POINTER?
             // Copy the mqtt topic
             msg.topic = RscString<512>(mqtt_msg->get_topic());
 
