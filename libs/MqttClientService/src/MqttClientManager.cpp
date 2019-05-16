@@ -233,23 +233,17 @@ int32 MqttClientManager::TryConsumeMessage(int32 clientId, Message& msg)
 
     try
     {
-        this->log.Info("** About to call client->TryConsumeMessage");
         got_message = this->client->TryConsumeMessage((Client::client_id_t)clientId, &mqtt_msg);
+        // Note that currently the Paho synchronous client may return a null message pointer
+        // while also telling us that a new message is present ... specifically, on the first
+        // call after Reconnect. So we must check for a null pointer here.
         if (got_message && mqtt_msg!=nullptr)
         {
-            this->log.Info("** Got message.");
-            this->log.Info("** Is mqtt_msg null? {0}", (mqtt_msg==nullptr) );
-            this->log.Info("** Getting topic");
-            this->log.Info("** mqtt_msg->get_topic() = {0}", mqtt_msg->get_topic());
-            this->log.Info("** About to cast topic to RscString");
-            // TODO: CHECK FOR NULL POINTER?
             // Copy the mqtt topic
             msg.topic = RscString<512>(mqtt_msg->get_topic());
 
-            this->log.Info("** About to copy payload");
             // Copy the mqtt payload
             const mqtt::binary mqtt_payload = mqtt_msg->get_payload();
-            this->log.Info("** Payload size = {0}", mqtt_payload.size());
             msg.payload = RscVariant<512>();
             msg.payload.SetType(RscType::Stream);
             memcpy(msg.payload.GetDataAddress(), mqtt_msg->get_payload_ref().data(), mqtt_payload.size());
@@ -264,10 +258,8 @@ int32 MqttClientManager::TryConsumeMessage(int32 clientId, Message& msg)
         }
         else
         {
-            this->log.Info("** No message");
             result = 0;  // No message
         }
-
     }
     catch(...)
     {
