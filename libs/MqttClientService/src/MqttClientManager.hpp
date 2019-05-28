@@ -48,9 +48,11 @@ public: // operations
     int32   DestroyClient(int32 clientId);
 //    int32   Disconnect(int32 clientId)override;
     int32   Disconnect(int32 clientId, int32 timeoutMS);
+    int32   GetTimeout(int32 clientId);
     boolean IsConnected(int32 clientId);
     int32   Publish(int32 clientId, const RscString<512>& topic, RscVariant<512> payload, uint32 length, int32 qos, boolean retained);
     int32   Reconnect(int32 clientId);
+    int32   SetTimeout(int32 clientId, int32 timeoutMS);
     int32   Subscribe(int32 clientId, const RscString<512>& topicFilter);
     int32   TryConsumeMessage(int32 clientId, Message& msg);
     int32   Unsubscribe(int32 clientId, const RscString<512>& topicFilter);

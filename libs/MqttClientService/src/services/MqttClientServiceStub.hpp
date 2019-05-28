@@ -1,8 +1,8 @@
+///////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) Phoenix Contact GmbH & Co. KG. All rights reserved.
-// Licensed under the MIT. See LICENSE file in the project root for full license information.
-// SPDX-License-Identifier: MIT
+//  Copyright PHOENIX CONTACT Electronics GmbH
 //
+///////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include "Arp/System/Rsc/Services/RscServiceStubBase.hxx"
 #include "IMqttClientService.hpp"
@@ -33,9 +33,11 @@ private: // IMqttClientService operations
     void CreateClient(RscServerContext& context);
     void DestroyClient(RscServerContext& context);
     void Disconnect(RscServerContext& context);
+    void GetTimeout(RscServerContext& context);
     void IsConnected(RscServerContext& context);
     void Publish(RscServerContext& context);
     void Reconnect(RscServerContext& context);
+    void SetTimeout(RscServerContext& context);
     void Subscribe(RscServerContext& context);
     void TryConsumeMessage(RscServerContext& context);
     void Unsubscribe(RscServerContext& context);

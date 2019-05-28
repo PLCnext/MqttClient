@@ -26,9 +26,11 @@ public: // operations
     void DestroyClient(Client::client_id_t clientId);
     void Disconnect(client_id_t client_id);
     void Disconnect(client_id_t client_id, int timeoutMS);
+    int GetTimeout(client_id_t client_id);
     bool IsConnected(Client::client_id_t clientId);
     void Publish(client_id_t client_id, mqtt::string_ref top, const void * payload, std::size_t n, int qos, bool retained);
     void Reconnect(Client::client_id_t clientId);
+    void SetTimeout(client_id_t client_id, int timeoutMS);
     void Subscribe(Client::client_id_t clientId, const std::string & topicFilter);
     bool TryConsumeMessage(Client::client_id_t clientId, mqtt::const_message_ptr * msg);
     void UnSubscribe(Client::client_id_t clientId, const std::string & topicFilter);

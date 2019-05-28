@@ -1,8 +1,8 @@
+///////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) Phoenix Contact GmbH & Co. KG. All rights reserved.
-// Licensed under the MIT. See LICENSE file in the project root for full license information.
-// SPDX-License-Identifier: MIT
+//  Copyright PHOENIX CONTACT Electronics GmbH
 //
+///////////////////////////////////////////////////////////////////////////////
 #include "MqttClientServiceProxy.hpp"
 #include "Arp/System/Rsc/Services/RscClient.hpp"
 #include "Arp/System/Rsc/Services/RscClientContext.hpp"
@@ -137,9 +137,38 @@ int32 MqttClientServiceProxy::Disconnect(int32 clientId, int32 timeoutMS)
     return result;
 }
 
-boolean MqttClientServiceProxy::IsConnected(int32 clientId)
+int32 MqttClientServiceProxy::GetTimeout(int32 clientId)
 {
     const RscHandle methodHandle = 5;
+    RscClient::TransactionGuard guard(this->rscClient, *this);
+
+    RscClientContext context(this->rscClient);
+    context.BeginServiceInvocationRequest(this->rscServiceProviderHandle, this->rscServiceHandle, methodHandle);
+
+    // serialize params here
+    RscWriter& writer = context.GetWriter();
+    writer.Write(clientId);
+
+    // process end of invocation request
+    context.EndServiceInvocationRequest();
+
+    // start reading invocation response
+    context.BeginServiceInvocationResponse(this->rscServiceProviderHandle, this->rscServiceHandle, methodHandle);
+
+    // deserialize return params here
+    RscReader& reader = context.GetReader();
+    int32 result = 0;
+    reader.Read(result);
+
+    // end reading invocation response
+    context.EndServiceInvocationResponse();
+
+    return result;
+}
+
+boolean MqttClientServiceProxy::IsConnected(int32 clientId)
+{
+    const RscHandle methodHandle = 6;
     RscClient::TransactionGuard guard(this->rscClient, *this);
 
     RscClientContext context(this->rscClient);
@@ -168,7 +197,7 @@ boolean MqttClientServiceProxy::IsConnected(int32 clientId)
 
 int32 MqttClientServiceProxy::Publish(int32 clientId, const RscString<512>& topic, RscVariant<512> payload, uint32 length, int32 qos, boolean retained)
 {
-    const RscHandle methodHandle = 6;
+    const RscHandle methodHandle = 7;
     RscClient::TransactionGuard guard(this->rscClient, *this);
 
     RscClientContext context(this->rscClient);
@@ -202,7 +231,7 @@ int32 MqttClientServiceProxy::Publish(int32 clientId, const RscString<512>& topi
 
 int32 MqttClientServiceProxy::Reconnect(int32 clientId)
 {
-    const RscHandle methodHandle = 7;
+    const RscHandle methodHandle = 8;
     RscClient::TransactionGuard guard(this->rscClient, *this);
 
     RscClientContext context(this->rscClient);
@@ -229,9 +258,39 @@ int32 MqttClientServiceProxy::Reconnect(int32 clientId)
     return result;
 }
 
+int32 MqttClientServiceProxy::SetTimeout(int32 clientId, int32 timeoutMS)
+{
+    const RscHandle methodHandle = 9;
+    RscClient::TransactionGuard guard(this->rscClient, *this);
+
+    RscClientContext context(this->rscClient);
+    context.BeginServiceInvocationRequest(this->rscServiceProviderHandle, this->rscServiceHandle, methodHandle);
+
+    // serialize params here
+    RscWriter& writer = context.GetWriter();
+    writer.Write(clientId);
+    writer.Write(timeoutMS);
+
+    // process end of invocation request
+    context.EndServiceInvocationRequest();
+
+    // start reading invocation response
+    context.BeginServiceInvocationResponse(this->rscServiceProviderHandle, this->rscServiceHandle, methodHandle);
+
+    // deserialize return params here
+    RscReader& reader = context.GetReader();
+    int32 result = 0;
+    reader.Read(result);
+
+    // end reading invocation response
+    context.EndServiceInvocationResponse();
+
+    return result;
+}
+
 int32 MqttClientServiceProxy::Subscribe(int32 clientId, const RscString<512>& topicFilter)
 {
-    const RscHandle methodHandle = 8;
+    const RscHandle methodHandle = 10;
     RscClient::TransactionGuard guard(this->rscClient, *this);
 
     RscClientContext context(this->rscClient);
@@ -261,7 +320,7 @@ int32 MqttClientServiceProxy::Subscribe(int32 clientId, const RscString<512>& to
 
 int32 MqttClientServiceProxy::TryConsumeMessage(int32 clientId, Message& msg)
 {
-    const RscHandle methodHandle = 9;
+    const RscHandle methodHandle = 11;
     RscClient::TransactionGuard guard(this->rscClient, *this);
 
     RscClientContext context(this->rscClient);
@@ -291,7 +350,7 @@ int32 MqttClientServiceProxy::TryConsumeMessage(int32 clientId, Message& msg)
 
 int32 MqttClientServiceProxy::Unsubscribe(int32 clientId, const RscString<512>& topicFilter)
 {
-    const RscHandle methodHandle = 10;
+    const RscHandle methodHandle = 12;
     RscClient::TransactionGuard guard(this->rscClient, *this);
 
     RscClientContext context(this->rscClient);

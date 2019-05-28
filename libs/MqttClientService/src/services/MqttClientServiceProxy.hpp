@@ -1,8 +1,8 @@
+///////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) Phoenix Contact GmbH & Co. KG. All rights reserved.
-// Licensed under the MIT. See LICENSE file in the project root for full license information.
-// SPDX-License-Identifier: MIT
+//  Copyright PHOENIX CONTACT Electronics GmbH
 //
+///////////////////////////////////////////////////////////////////////////////
 #pragma once
 #include "Arp/System/Rsc/Services/RscServiceProxyBase.hxx"
 #include "IMqttClientService.hpp"
@@ -27,9 +27,11 @@ public: // IMqttClientService operations
     int32   CreateClient(const RscString<512>& serverURI, const RscString<512>& clientId)override;
     int32   DestroyClient(int32 clientId)override;
     int32   Disconnect(int32 clientId, int32 timeoutMS)override;
+    int32   GetTimeout(int32 clientId)override;
     boolean IsConnected(int32 clientId)override;
     int32   Publish(int32 clientId, const RscString<512>& topic, RscVariant<512> payload, uint32 length, int32 qos, boolean retained)override;
     int32   Reconnect(int32 clientId)override;
+    int32   SetTimeout(int32 clientId, int32 timeoutMS)override;
     int32   Subscribe(int32 clientId, const RscString<512>& topicFilter)override;
     int32   TryConsumeMessage(int32 clientId, Message& msg)override;
     int32   Unsubscribe(int32 clientId, const RscString<512>& topicFilter)override;
