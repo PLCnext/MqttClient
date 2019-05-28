@@ -118,6 +118,23 @@ int32 MqttClientManager::Disconnect(int32 clientId, int32 timeoutMS)
     return result;
 }
 
+int32 MqttClientManager::GetTimeout(int32 clientId)
+{
+    int32 result = 0;
+
+    try
+    {
+        result = this->client->GetTimeout((Client::client_id_t)clientId);
+    }
+    catch(...)
+    {
+        this->log.Error("Exception in operation: GetTimeout({0})", clientId);
+        HandleException();
+        result = -1;
+    }
+    return result;
+}
+
 boolean MqttClientManager::IsConnected(int32 clientId)
 {
     boolean result = false;
@@ -173,6 +190,23 @@ int32 MqttClientManager::Reconnect(int32 clientId)
     return result;
 }
 
+int32 MqttClientManager::SetTimeout(int32 clientId, int32 timeoutMS)
+{
+    int32 result = 0;
+
+    try
+    {
+        this->client->SetTimeout((Client::client_id_t)clientId, timeoutMS);
+    }
+    catch(...)
+    {
+        this->log.Error("Exception in operation: SetTimeout({0}, {1})", clientId, timeoutMS);
+        HandleException();
+        result = -1;
+    }
+    return result;
+}
+
 int32 MqttClientManager::Subscribe(int32 clientId, const RscString<512>& topicFilter)
 {
     int32 result = 0;
@@ -194,13 +228,16 @@ int32 MqttClientManager::TryConsumeMessage(int32 clientId, Message& msg)
 {
     int32 result = -1;
 
-    mqtt::const_message_ptr mqtt_msg;
+    mqtt::const_message_ptr mqtt_msg = nullptr;
     bool got_message;
 
     try
     {
         got_message = this->client->TryConsumeMessage((Client::client_id_t)clientId, &mqtt_msg);
-        if (got_message)
+        // Note that currently the Paho synchronous client may return a null message pointer
+        // while also telling us that a new message is present ... specifically, on the first
+        // call after Reconnect. So we must check for a null pointer here.
+        if (got_message && mqtt_msg!=nullptr)
         {
             // Copy the mqtt topic
             msg.topic = RscString<512>(mqtt_msg->get_topic());
@@ -223,7 +260,6 @@ int32 MqttClientManager::TryConsumeMessage(int32 clientId, Message& msg)
         {
             result = 0;  // No message
         }
-
     }
     catch(...)
     {
