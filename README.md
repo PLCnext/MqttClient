@@ -6,6 +6,16 @@
 [![Web](https://img.shields.io/badge/PLCnext-Website-blue.svg)](https://www.phoenixcontact.com/plcnext)
 [![Community](https://img.shields.io/badge/PLCnext-Community-blue.svg)](https://www.plcnext-community.net)
 
+**THIS PROJECT IS NO LONGER MAINTAINED**, either in Github or in the PLCnext Store.
+
+For examples of how to develop [ACF Components](https://www.plcnext.help/te/Programming/Cpp/Cpp_program_structure/ACF_Application_Component_Framework.htm) for the PLCnext Runtime, please see the [C++ Examples](https://github.com/PLCnext/CppExamples) repository on Github.
+
+For MQTT Client solutions on a PLCnext Control device, please search the [PLCnext Store](https://www.plcnextstore.com) for suitable apps.
+
+Unfortunately there is currently no publicly available procedure for developing a custom RSC service for the PLCnext Runtime, similar to the one demonstrated here. If this is a requirement for your project, please get in touch through the [PLCnext Community](https://www.plcnext-community.net).
+
+<hr>
+
 | Date       | Version | Author       |
 |------------|---------|--------------|
 | 29.03.2019 | 1.0.0   | Martin Boers |
