@@ -31,7 +31,7 @@ Contributions to this project are welcome.
 
 ## Building from source
 
-Building from source requires the PLCnext SDK for your target. It is strongly recommended that you use the PLCnext Command Line Interface (CLI) to install and manage PLCnext SDKs on your host. Assistance with this is available from the [PLCnext Community](https://www.plcnext-community.net).
+Building from source requires the PLCnext SDK for your target. It is strongly recommended that you use the PLCnext Command Line Interface (CLI) to install and manage PLCnext SDKs on your host. Assistance with this is available from the [PLCnext Info Center](https://www.plcnext.help/te/Where_to_start/Tool_downloads.htm#SDK).
 
 An example of a build session is as follows:
 
